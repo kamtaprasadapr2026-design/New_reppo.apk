@@ -1,0 +1,64 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /users/{userId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /courses/{courseId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    match /videos/{videoId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    match /shorts/{shortId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    match /announcements/{announcementId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    match /attendance/{attendanceId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /fees/{feeId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /payments/{paymentId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /receipts/{receiptId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /upi_qr/{qrId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+
+    match /app_settings/{settingsId} {
+      allow read: if true;
+      allow write: if isSignedIn();
+    }
+  }
+}
